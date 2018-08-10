@@ -15,7 +15,7 @@ const routeInitialState = fromJS({
 });
 
 const readReducer = handleActions({
-  [actions.saveOnStore]: (state, { payload }) => (merge(state, payload)),
+  [actions.saveOnStore]: (state, { payload }) => merge(state, { [payload.name]: payload.data }),
 }, {});
 
 const routeReducer = (state = routeInitialState, action) => {
@@ -33,7 +33,7 @@ const routeReducer = (state = routeInitialState, action) => {
 const createReducer = (injectedReducers) => combineReducers({
   route: routeReducer,
   ...injectedReducers,
-  readReducer,
+  cache: readReducer,
 });
 
 export default createReducer;

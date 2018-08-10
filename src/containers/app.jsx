@@ -1,25 +1,39 @@
 import React from 'react';
-import { Card, Icon, Image } from 'semantic-ui-react';
+import { Container } from 'semantic-ui-react';
 import { connect } from 'react-redux';
+import { Route, Redirect, Switch } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
 import * as actions from '../store/actions';
+import Footer from '../components/footer';
+import Pokemon from './pokemon';
 
-const App = ({ test, name }) => (
-  <Card>
-    <Image src="https://www.ienglishstatus.com/wp-content/uploads/2018/04/Anonymous-Whatsapp-profile-picture.jpg" />
-    <Card.Content>
-      <Card.Header>Matthew</Card.Header>
-      <Card.Meta>
-        <span className="date">Joined in 2015</span>
-      </Card.Meta>
-      <Card.Description>{JSON.stringify(name)}</Card.Description>
-    </Card.Content>
-    <Card.Content extra>
-      <a>
-        <Icon onClick={test} name="user" />
-        22 Friends       
-      </a>
-    </Card.Content>
-  </Card>
+const styles = {
+  mainContainer: {
+    width: '100vw',
+    height: '100vh',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+    background: 'linear-gradient(to right, #f5f7fa   , #c3cfe2)',
+  },
+  infoContainer: {
+
+  }
+};
+
+const App = () => (
+  <Container style={styles.mainContainer}>
+    <Container style={styles.infoContainer}>
+      <Switch>
+        <Route path="/asas" render={() => (<h2>2188321809213089213098908</h2>)} />
+        <Route path="/pokemons" component={Pokemon} />
+        <Redirect exact from="/" to="/pokemons" />
+      </Switch>
+    </Container>
+    <Footer />
+    <ToastContainer />
+  </Container>
 );
 
 const mapStateToProps = (state) => ({
@@ -27,7 +41,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  test: () => dispatch(actions.read('pokemon/mewtwo', dispatch)),
+  test: () => dispatch(actions.read('pokemon/mewtasasaaswo', dispatch)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

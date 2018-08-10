@@ -17,6 +17,7 @@ import FontFaceObserver from 'fontfaceobserver';
 import createHistory from 'history/createBrowserHistory';
 import 'semantic-ui-css/semantic.min.css';
 import 'sanitize.css/sanitize.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Import root app
 import App from './containers/app';
