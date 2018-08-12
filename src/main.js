@@ -22,13 +22,13 @@ import 'react-toastify/dist/ReactToastify.css';
 // Import root app
 import App from './containers/app';
 // Load the favicon
-/* eslint-disable import/no-webpack-loader-syntax */
-// import '!file-loader?name=[name].[ext]!./images/favicon.ico';
-/* eslint-enable import/no-webpack-loader-syntax */
+/* eslint-disable */
+import '!file-loader?name=[name].[ext]!./assets/favico.ico';
+/* eslint-enable */
 
 // Import CSS reset and Global Styles
 
-import configureStore from './store/configureStore';
+import { configureStore } from './store/configureStore';
 
 // Observe loading of Open Sans (to remove open sans, remove the <link> tag in
 // the index.html file and this observer)

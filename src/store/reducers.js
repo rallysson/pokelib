@@ -15,7 +15,7 @@ const routeInitialState = fromJS({
 });
 
 const readReducer = handleActions({
-  [actions.saveOnStore]: (state, { payload }) => merge(state, { [payload.name]: payload.data }),
+  [actions.saveOnStore]: (state, { payload }) => merge({ [payload.name]: payload.data }, state)
 }, {});
 
 const routeReducer = (state = routeInitialState, action) => {

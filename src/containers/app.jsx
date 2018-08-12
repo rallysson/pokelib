@@ -1,10 +1,8 @@
 import React from 'react';
-import { Container } from 'semantic-ui-react';
-import { connect } from 'react-redux';
+import { Container, Image } from 'semantic-ui-react';
 import { Route, Redirect, Switch } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import * as actions from '../store/actions';
-import Footer from '../components/footer';
+import EeveeImg from '../assets/eeve.png';
 import Pokemon from './pokemon';
 
 const styles = {
@@ -16,9 +14,19 @@ const styles = {
     alignItems: 'center',
     flexDirection: 'column',
     background: 'linear-gradient(to right, #f5f7fa   , #c3cfe2)',
+    zIndex: '-1',
   },
   infoContainer: {
-
+    zIndex: '3'
+  },
+  footer: {
+    display: 'flex',
+    position: 'fixed',
+    bottom: 10,
+    right: 0,
+    zIndex: 1,
+    alignItems: 'flex-end',
+    justifyContent: 'flex-end',
   }
 };
 
@@ -26,23 +34,16 @@ const App = () => (
   <Container style={styles.mainContainer}>
     <Container style={styles.infoContainer}>
       <Switch>
-        <Route path="/asas" render={() => (<h2>2188321809213089213098908</h2>)} />
         <Route path="/pokemons" component={Pokemon} />
         <Redirect exact from="/" to="/pokemons" />
       </Switch>
     </Container>
-    <Footer />
     <ToastContainer />
+    <Container style={styles.footer}>
+      <Image size="huge" src={EeveeImg} />
+    </Container>
   </Container>
 );
 
-const mapStateToProps = (state) => ({
-  name: state,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  test: () => dispatch(actions.read('pokemon/mewtasasaaswo', dispatch)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;
 
