@@ -22,7 +22,7 @@ class Pokemon extends PureComponent {
   };
 
   handlePoke = (e) => {
-    this.setState({ pokemonToFind: e.target.value });
+    this.setState({ pokemonToFind: e.target.value.toLowerCase() });
   };
 
   searchPokemon = () => (async () => {

@@ -4,11 +4,12 @@ import { Route, Redirect, Switch } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import EeveeImg from '../assets/eeve.png';
 import Pokemon from './pokemon';
+import Pokemons from './pokemons';
 
 const styles = {
   mainContainer: {
-    width: '100vw',
-    height: '100vh',
+    width: '100%',
+    height: '100%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -17,7 +18,12 @@ const styles = {
     zIndex: '-1',
   },
   infoContainer: {
-    zIndex: '3'
+    zIndex: '3',
+    height: '100%',
+    width: '100%',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   footer: {
     display: 'flex',
@@ -34,7 +40,7 @@ const App = () => (
   <Container style={styles.mainContainer}>
     <Container style={styles.infoContainer}>
       <Switch>
-        <Route path="/pokemons" component={Pokemon} />
+        <Route path="/pokemons" component={Pokemons} />
         <Redirect exact from="/" to="/pokemons" />
       </Switch>
     </Container>

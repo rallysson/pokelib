@@ -27,7 +27,7 @@
     "clean": "npm run test:clean && npm run build:clean",
     "lint": "npm run lint:js",
     "lint:eslint": "eslint -- . --ignore-path .gitignore",
-    "eslint:fix": "eslint --fix -- . --ignore-path .gitignore",
+    "eslint:fix": "eslint --fix src --ignore-path .gitignore",
     "lint:js": "npm run lint:eslint -- . ",
     "pretest": "npm run test:clean && npm run lint",
     "test:clean": "rimraf ./coverage",
