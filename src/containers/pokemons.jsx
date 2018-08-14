@@ -1,10 +1,10 @@
 import React, { PureComponent } from 'react';
 import { connect } from 'react-redux';
-import { Container, Card, Image, Loader, Pagination, Input } from 'semantic-ui-react';
+import { Container, Card, Image, Loader, Pagination, Input, Button } from 'semantic-ui-react';
 import PropTypes from 'prop-types';
 import { map, isEmpty } from 'lodash/fp';
+import { Link } from 'react-router-dom';
 import { read } from '../store/actions';
-import Pokelib from '../assets/pokelib.png';
 import { findPoke } from '../store/selectors';
 
 
@@ -31,56 +31,74 @@ const styles = {
 class Pokemons extends PureComponent {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
-    allPokes: PropTypes.object,
+    getPokesBypage: PropTypes.func,
   };
 
-  static defaultProps = {
-    allPokes: {},
+  state = {
+    page: 1,
+    poke: '',
   };
-
-
   componentDidMount() {
-    this.getAllPokes();
+    this.getAllPokes(this.state.page);
   }
 
-  getAllPokes = () => this.props.dispatch(read({ slug: 'pokemon/', name: 'all' }))
+  getAllPokes = (page) => {
+    const { dispatch } = this.props;
+    const offset = (page - 1) * 20;
+    dispatch(read({ slug: `pokemon/?limit=20&offset=${offset}`, name: `pokesPage${page}` }));
+    this.setState({ page });
+  }
+
   getPokeIdFromUrl = (url) => url.split('/').splice(-2, 1);
   getPokeImageUrl = (id) => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`
 
+  handlePoke = (e) => this.setState({ poke: e.target.value });
   generateId = () => Math.floor(Math.random() * 10000000);
 
   render() {
-    const { allPokes } = this.props;
+    const { getPokesBypage } = this.props;
+    const { page, poke } = this.state;
+    const pokes = getPokesBypage(page);
 
     return (
       <Container style={styles.gridPokesContainer}>
-        <Image size="medium" src={Pokelib} />
         <Input
           style={{ width: '50%', margin: 10 }}
           onChange={this.handlePoke}
-          action={{ icon: 'search', color: 'teal', onClick: () => { console.log('asssa'); } }}
+          action={
+            <Link to={`/pokemon/${poke}`}>
+              <Button style={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }} icon="search" color="teal" />
+            </Link>
+          }
           placeholder="Procurar"
         />
         <Container style={styles.pokesContainer}>
-          {!isEmpty(allPokes) ? map((poke) => {
-            const id = this.getPokeIdFromUrl(poke.url);
+          {!isEmpty(pokes) ? map((el) => {
+            const id = this.getPokeIdFromUrl(el.url);
             return (
-              <Card style={styles.card} key={this.generateId()}>
-                <Image size="small" src={this.getPokeImageUrl(id)} />
-                <Card.Content>
-                  <Card.Header>{poke.name}</Card.Header>
-                </Card.Content>
-              </Card>
+              <Link to={`/pokemon/${id}`}>
+                <Card style={styles.card} key={this.generateId()}>
+                  <Image size="small" src={this.getPokeImageUrl(id)} />
+                  <Card.Content>
+                    <Card.Header>{el.name.replace(/-/g, ' ')}</Card.Header>
+                  </Card.Content>
+                </Card>
+              </Link>
             );
-          }, allPokes.results) : <Loader active />}
+          }, pokes.results) : <Loader active />}
         </Container>
-        <Pagination defaultActivePage={5} totalPages={10} />
+        <Pagination
+          onPageChange={(e, data) => this.getAllPokes(data.activePage)}
+          defaultActivePage={1}
+          totalPages={48}
+          style={{ margin: 10 }}
+        />
       </Container>
     );
   }
 }
 
 const mapStateToProps = (state) => ({
-  allPokes: findPoke(state.get('cache'), 'all')
+  getPokesBypage: (page) => findPoke(state.get('cache'), `pokesPage${page}`)
 });
 export default connect(mapStateToProps)(Pokemons);

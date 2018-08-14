@@ -8,11 +8,20 @@ import { findPoke } from '../store/selectors';
 import ShowPoke from '../components/showPoke';
 import Status from '../components/status';
 
+const styles = {
+  tabContainer: {
+    height: '50%',
+    minHeight: '300px',
+    display: 'flex',
+    justifyContent: 'center',
+  },
+};
 
 class Pokemon extends PureComponent {
   static propTypes = {
     search: PropTypes.func.isRequired,
     getPokemon: PropTypes.func.isRequired,
+    match: PropTypes.object.isRequired,
   };
 
   state = {
@@ -20,13 +29,15 @@ class Pokemon extends PureComponent {
     pokemon: {},
     isLoading: false,
   };
-
+  componentDidMount() {
+    const { match: { params } } = this.props;
+    this.searchPokemon(params.id);
+  }
   handlePoke = (e) => {
     this.setState({ pokemonToFind: e.target.value.toLowerCase() });
   };
 
-  searchPokemon = () => (async () => {
-    const { pokemonToFind } = this.state;
+  searchPokemon = (pokemonToFind) => (async () => {
     const { getPokemon, search } = this.props;
 
     if (!isEmpty(getPokemon(pokemonToFind))) {
@@ -41,19 +52,19 @@ class Pokemon extends PureComponent {
   })();
 
   render() {
-    const { pokemon, isLoading } = this.state;
+    const { pokemon, isLoading, pokemonToFind } = this.state;
 
     const panes = [
       {
         menuItem: 'General',
         render: () => (
-          <Container style={{ height: '50%', minHeight: '300px' }} attached={false}>
+          <Container style={styles.tabContainer} attached={false}>
             {isLoading ? <Loader active>carregando</Loader> : <ShowPoke pokemon={pokemon} />}
           </Container>)
       }, {
         menuItem: 'Status',
         render: () => (
-          <Container style={{ height: '50%', minHeight: '300px' }} attached={false}>
+          <Container style={styles.tabContainer} attached={false}>
             {isLoading ? <Loader active>carregando</Loader> : <Status pokemon={pokemon} />}
           </Container>)
       },
@@ -64,7 +75,7 @@ class Pokemon extends PureComponent {
         <Input
           style={{ width: '100%' }}
           onChange={this.handlePoke}
-          action={{ icon: 'search', color: 'teal', onClick: () => { this.searchPokemon(); } }}
+          action={{ icon: 'search', color: 'teal', onClick: () => { this.searchPokemon(pokemonToFind); } }}
           placeholder="Procurar"
         />
         <Tab menu={{ secondary: true, pointing: true }} panes={panes} />
