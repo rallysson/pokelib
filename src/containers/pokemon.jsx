@@ -89,7 +89,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  search: (poke) => dispatch(actions.read({ slug: `pokemon/${poke}`, name: poke })),
+  search: (poke) => dispatch(actions.read({ slug: `pokemon/${poke}/`, name: poke })),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Pokemon);
