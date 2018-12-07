@@ -16,24 +16,40 @@ import { map, isEmpty, get, chunk, filter } from "lodash/fp";
 import { Link } from "react-router-dom";
 import { read } from "../store/actions";
 import { findPoke } from "../store/selectors";
+import formatPokeName from "../helpers/formatPokeName";
 
 const styles = {
   pokesContainer: {
     width: "100%",
-    height: "80%",
+    minHeight: 420,
     display: "flex",
-    flexWrap: "wrap"
+    flexWrap: "wrap",
+    backgroundColor: "rgba(255, 255, 255, .9)",
+    borderRadius: 5
   },
   card: {
-    width: 150,
+    width: 151,
     maxHeight: 200,
+    borderColor: "none",
     margin: 5,
-    cursor: "pointer"
+    background: "rgba(255, 255, 255, 0.1)",
+    cursor: "pointer",
+    boxShadow: "0px 0px 7px silver"
   },
   gridPokesContainer: {
     display: "flex",
     alignItems: "center",
     flexDirection: "column"
+  },
+  imageContainer: {
+    width: 150,
+    minHeight: 150
+  },
+  pokeName: {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
+
   }
 };
 
@@ -73,7 +89,7 @@ class Pokemons extends PureComponent {
 
   handlePage = (e, data) => this.setState({ page: data.activePage });
 
-  renderPokes = (filteredPokes) => {
+  renderPokes = filteredPokes => {
     const { poke, page } = this.state;
     const { pokes } = this.props;
 
@@ -82,14 +98,18 @@ class Pokemons extends PureComponent {
       return (
         <Link to={`/pokemon/${id}`}>
           <Card style={styles.card} key={el.name}>
-            <Image size="small" src={this.getPokeImageUrl(id)} />
+            <Card.Content style={styles.imageContainer}>
+              <Image size="medium" src={this.getPokeImageUrl(id)} />
+            </Card.Content>
             <Card.Content>
-              <Card.Header>{el.name.replace(/-/g, " ")}</Card.Header>
+              <Card.Header style={styles.pokeName}>
+                {formatPokeName(el.name)}
+              </Card.Header>
             </Card.Content>
           </Card>
         </Link>
       );
-    }, chunk(21, filteredPokes)[page]);
+    }, chunk(14, filteredPokes)[page - 1]);
   };
 
   render() {
@@ -114,7 +134,7 @@ class Pokemons extends PureComponent {
         <Pagination
           onPageChange={this.handlePage}
           defaultActivePage={1}
-          totalPages={chunk(21, filteredPokes).length - 1}
+          totalPages={chunk(14, filteredPokes).length - 1}
           style={{ margin: 10 }}
         />
       </Container>

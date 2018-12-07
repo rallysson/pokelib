@@ -1,6 +1,7 @@
 import React from 'react';
 import { Container, Label } from 'semantic-ui-react';
 import { map } from 'lodash/fp';
+import formatPokeName from "../helpers/formatPokeName";
 import PropTypes from 'prop-types';
 import ShowMore from 'react-show-more';
 
@@ -35,7 +36,7 @@ const generateId = () => Math.floor(Math.random() * 100000);
 const PokeDescription = ({ pokemon }) => (
   <Container style={styles.descriptionContainer}>
     <Container style={styles.header}>
-      <h3>{pokemon.name}</h3>
+      <h3>{formatPokeName(pokemon.name)}</h3>
     </Container>
     <Container style={styles.description}>
       <Container>
