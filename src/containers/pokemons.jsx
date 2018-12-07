@@ -46,10 +46,9 @@ const styles = {
     minHeight: 150
   },
   pokeName: {
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
-    whiteSpace: 'nowrap',
-
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap"
   }
 };
 
@@ -69,15 +68,17 @@ class Pokemons extends PureComponent {
   }
 
   getAllPokes = async () => {
-    const { dispatch } = this.props;
-    this.setState(() => ({ isLoading: true }));
-    await dispatch(
-      read({
-        slug: "pokemon/",
-        name: "pokes"
-      })
-    );
-    this.setState(() => ({ isLoading: false }));
+    const { dispatch, pokes } = this.props;
+    if (isEmpty(pokes)) {
+      this.setState(() => ({ isLoading: true }));
+      await dispatch(
+        read({
+          slug: "pokemon/",
+          name: "pokes"
+        })
+      );
+      this.setState(() => ({ isLoading: false }));
+    }
   };
 
   getPokeIdFromUrl = url => url.split("/").splice(-2, 1);
@@ -85,7 +86,6 @@ class Pokemons extends PureComponent {
     `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`;
 
   handlePoke = e => this.setState({ poke: e.target.value });
-  generateId = () => Math.floor(Math.random() * 10000000);
 
   handlePage = (e, data) => this.setState({ page: data.activePage });
 
